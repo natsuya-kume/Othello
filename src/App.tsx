@@ -1,9 +1,11 @@
 import React from "react";
+import GameComponent from "./GameComponent";
+import "./Othello.css";
 
 const App = () => {
   return (
     <div className="App">
-      <p className="App-intro">{/* <GameComponent></GameComponent> */}</p>
+      <GameComponent />
     </div>
   );
 };

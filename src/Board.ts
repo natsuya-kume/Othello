@@ -91,7 +91,7 @@ export class Board {
     let neighbourX = startX + proceedX;
     let neighbourY = startY + proceedY;
     if (!this.inBoard(neighbourX, neighbourY)) {
-      false;
+      return false;
     }
     let nextPiece = Board.getNextPiece(isFirst);
     let neighbourPiece = this.getSquare(neighbourX, neighbourY);
