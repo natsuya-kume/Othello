@@ -36,7 +36,11 @@ export default class GameComponent extends Component<{}, GameState> {
 
   // マスがクリックされた時の処理
   private handleClick(x: number, y: number) {
+    console.log(x, y);
+    console.log(this.state.firstIsNext);
+    // getSquareメソッドを使用
     if (this.board.getSquare(x, y)) {
+      // 値がnullではなく返ってきた場合(駒が設置されていた時)
       alert("既に駒が置かれています");
       return;
     }

@@ -88,27 +88,37 @@ export class Board {
     proceedX: number,
     proceedY: number
   ): boolean {
+    // クリックされたマスを除く、周囲のマスの二次元配列の添字を取得する
     let neighbourX = startX + proceedX;
     let neighbourY = startY + proceedY;
+    // 周囲のマスが盤面にない時はfalse
     if (!this.inBoard(neighbourX, neighbourY)) {
       return false;
     }
+    // isFirst(true or false)に応じて駒を取得
     let nextPiece = Board.getNextPiece(isFirst);
+    // 周囲のマスの情報を取得(nullか駒が置かれているか)
     let neighbourPiece = this.getSquare(neighbourX, neighbourY);
+    // 周囲のマスに駒が無かった場合　or 周囲のマスにある駒とこれから置く駒の色が同じ場合
     if (!neighbourPiece || neighbourPiece === nextPiece) {
       return false;
     }
-
+    // クリックされたマスから一つ飛ばししたマスの二次元配列の添字を取得する;
     let x = neighbourX + proceedX;
     let y = neighbourY + proceedY;
+    // 一つ飛ばししたマスが盤面内にある時は繰り返す;
     while (this.inBoard(x, y)) {
+      // そのマスの情報を取得(nullか駒が置かれているか)
       let seekPiece = this.getSquare(x, y);
+      // 駒がない場合はfalse
       if (!seekPiece) {
         return false;
       }
+      // 一つ飛ばししたマスに駒があってその駒がこれから置く駒と同じ色の場合
       if (seekPiece === nextPiece) {
         return true;
       }
+      // その次のマスをチェックするためx,yを更新
       x += proceedX;
       y += proceedY;
     }
@@ -117,11 +127,13 @@ export class Board {
 
   // 反転処理の実行
   public executeReverse(x: number, y: number, isFirst: boolean): void {
+    // 二重ループでクリックされたマスを中心とする9つのマスを調べる
     for (let vectorX = -1; vectorX <= 1; vectorX++) {
       for (let vectorY = -1; vectorY <= 1; vectorY++) {
         if (vectorX === 0 && vectorY === 0) {
           continue;
         }
+        // 相手の駒を反転できる時
         if (this.checkReverseInternal(x, y, isFirst, vectorX, vectorY)) {
           this.executeReverseInternal(x, y, isFirst, vectorX, vectorY);
         }
