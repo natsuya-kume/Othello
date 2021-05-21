@@ -44,9 +44,11 @@ export default class GameComponent extends Component<{}, GameState> {
       alert("既に駒が置かれています");
       return;
     }
-
+    // 反転処理の実行
     this.board.executeReverse(x, y, this.state.firstIsNext);
+    // クリックした場所に駒を置く
     this.board.setSquare(x, y, this.state.firstIsNext);
+    // 順番の交代
     this.setState({ firstIsNext: !this.state.firstIsNext });
   }
 }

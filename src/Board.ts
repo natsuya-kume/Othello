@@ -55,7 +55,7 @@ export class Board {
 
   // 指定した座標に駒を設定する
   public setSquare(x: number, y: number, isFirst: boolean): void {
-    // ここで返ってくる値に応じて駒を設定
+    // ここで返ってくる値に応じて駒を置く
     this.squares[x][y] = Board.getNextPiece(isFirst);
   }
 
@@ -103,7 +103,7 @@ export class Board {
     if (!neighbourPiece || neighbourPiece === nextPiece) {
       return false;
     }
-    // クリックされたマスから一つ飛ばししたマスの二次元配列の添字を取得する;
+    // クリックされたマスから一つ飛ばししたマスの二次元配列の添字を取得する;(隣に駒がある箇所だけ)
     let x = neighbourX + proceedX;
     let y = neighbourY + proceedY;
     // 一つ飛ばししたマスが盤面内にある時は繰り返す;
@@ -118,7 +118,7 @@ export class Board {
       if (seekPiece === nextPiece) {
         return true;
       }
-      // その次のマスをチェックするためx,yを更新
+      // その次のマスをチェックするためx,yを更新(駒の色が置いた駒と違う場合)
       x += proceedX;
       y += proceedY;
     }
@@ -148,18 +148,26 @@ export class Board {
     vectorX: number,
     vectorY: number
   ) {
+    // クリックされたマスを除く、周囲のマスの二次元配列の添字を取得する
     let x = startX + vectorX;
     let y = startY + vectorY;
+    // isFirst(true or false)に応じて駒を取得
     let nextPiece = Board.getNextPiece(isFirst);
+    // 周囲のマスが盤面内にある時は繰り返す
     while (this.inBoard(x, y)) {
+      // そのマスの情報を取得(nullか駒が置かれているか)
       let seekPiece = this.getSquare(x, y);
+      // 駒がない場合はfalse
       if (!seekPiece) {
         return;
       }
+      // 隣のマスに駒があってその駒がこれから置く駒と同じ色の場合
       if (seekPiece === nextPiece) {
         return;
       }
+      // それ以外の場合は駒を置く
       this.setSquare(x, y, isFirst);
+      // その次のマスを見る
       x += vectorX;
       y += vectorY;
     }
